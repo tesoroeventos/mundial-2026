@@ -83,6 +83,13 @@ body {
   opacity: 0.8;
 }
 
+.app-header .eyebrow-marca {
+  color: #F0D98A;
+  opacity: 1;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
 .app-header h1 {
   margin: 0;
   font-size: 20px;
@@ -159,6 +166,31 @@ body {
   font-weight: 500;
   padding: 2px 8px;
   border-radius: 6px;
+}
+
+.badge-vivo {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: #FCEBEB;
+  color: #A32D2D;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.punto-vivo {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #E24B4A;
+  animation: parpadeo 1.2s infinite;
+}
+
+@keyframes parpadeo {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
 }
 
 .partido-equipos {
