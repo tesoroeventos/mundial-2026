@@ -12,7 +12,7 @@
  * forzar la actualización en los celulares que ya instalaron la app.
  */
 
-const CACHE_NAME = 'mundial2026-v7';
+const CACHE_NAME = 'mundial2026-v8';
 
 const ARCHIVOS_SHELL = [
   './',

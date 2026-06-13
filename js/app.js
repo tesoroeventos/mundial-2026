@@ -91,6 +91,16 @@ function tipoPartido(estado) {
   return 'proximo';
 }
 
+// Devuelve "73'", "45+3'" (tiempo agregado), o "En vivo" si no hay minuto cargado
+function textoMinuto(partido) {
+  const minuto = partido.minuto;
+  if (minuto === null || minuto === undefined) return 'En vivo';
+
+  const extra = partido.tiempo_extra;
+  if (extra) return `${minuto}+${extra}'`;
+  return `${minuto}'`;
+}
+
 function tarjetaPartido(partido, tipo) {
   const local = equipoInfo(partido.local);
   const visitante = equipoInfo(partido.visitante);
@@ -113,7 +123,7 @@ function tarjetaPartido(partido, tipo) {
   if (tipo === 'finalizado') {
     metaDerecha = '<span class="badge-finalizado">Finalizado</span>';
   } else if (tipo === 'jugando') {
-    metaDerecha = '<span class="badge-vivo"><span class="punto-vivo" aria-hidden="true"></span>En vivo</span>';
+    metaDerecha = `<span class="badge-vivo"><span class="punto-vivo" aria-hidden="true"></span>${textoMinuto(partido)}</span>`;
   } else {
     metaDerecha = `<span class="badge-hora">${formatearFechaHora(partido.fecha, partido.hora)}</span>`;
   }
@@ -417,7 +427,7 @@ function tarjetaLlave(cruce) {
   if (partido.estado === 'finalizado') {
     metaDerecha = '<span class="badge-finalizado">Finalizado</span>';
   } else if (partido.estado === 'jugando') {
-    metaDerecha = '<span class="badge-vivo"><span class="punto-vivo" aria-hidden="true"></span>En vivo</span>';
+    metaDerecha = `<span class="badge-vivo"><span class="punto-vivo" aria-hidden="true"></span>${textoMinuto(partido)}</span>`;
   } else {
     metaDerecha = partido.fecha ? `<span class="badge-hora">${formatearFechaHora(partido.fecha, partido.hora)}</span>` : '';
   }

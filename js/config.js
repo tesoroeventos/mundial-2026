@@ -10,7 +10,8 @@
  * se ve, sin depender de la API.
  */
 const CONFIG = {
-  API_URL: 'https://script.google.com/macros/s/AKfycbx7UAQyBcaed6YxrfMGeUF4IZ4SZLpUHO8ntqCdUJ04X7jXxNGZJ8wYMmQtwLjn8bqk/exec',
+  API_URL: 'https://script.google.com/macros/s/AKfycbx7UAQyBcaed6YxrfMGeUF4IZ4SZLpUHO8ntqCdUJ04X7jXxNGZJ8wYMmQtwLjn8bqk/exec
+',
   CLAVE_CACHE: 'mundial2026_fixture',
   CLAVE_CACHE_FECHA: 'mundial2026_fixture_fecha',
   MAX_PROXIMOS: 5,
