@@ -1,0 +1,400 @@
+:root {
+  --azul-oscuro: #0C447C;
+  --azul: #185FA5;
+  --celeste: #378ADD;
+  --celeste-claro: #E6F1FB;
+  --texto: #2C2C2A;
+  --texto-secundario: #5F5E5A;
+  --borde: #E2E2DE;
+  --fondo: #F7F8FA;
+  --verde-bg: #EAF3DE;
+  --verde-texto: #3B6D11;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--fondo);
+  color: var(--texto);
+}
+
+.oculto {
+  display: none !important;
+}
+
+/* -------------------- Pantalla de carga -------------------- */
+#pantalla-carga {
+  position: fixed;
+  inset: 0;
+  background: var(--azul-oscuro);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  z-index: 100;
+}
+
+#pantalla-carga p {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid rgba(255, 255, 255, 0.25);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: girar 0.8s linear infinite;
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg); }
+}
+
+/* -------------------- App shell -------------------- */
+#app {
+  max-width: 480px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--fondo);
+}
+
+.app-header {
+  background: var(--azul-oscuro);
+  color: #fff;
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app-header .eyebrow {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+}
+
+.app-header .icono-balon {
+  font-size: 24px;
+}
+
+/* -------------------- Contenido -------------------- */
+#contenido {
+  flex: 1;
+  padding: 4px 16px 90px;
+}
+
+.vista {
+  display: none;
+}
+
+.vista-activa {
+  display: block;
+}
+
+#contenido h2 {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--texto-secundario);
+  margin: 18px 0 10px;
+}
+
+.placeholder {
+  font-size: 13px;
+  color: var(--texto-secundario);
+  text-align: center;
+  padding: 32px 12px;
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+}
+
+/* -------------------- Tarjetas de partidos -------------------- */
+.lista-partidos {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.partido-card {
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+
+.partido-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--texto-secundario);
+  margin-bottom: 8px;
+}
+
+.badge-hora {
+  color: var(--azul);
+  font-weight: 500;
+}
+
+.badge-finalizado {
+  background: var(--verde-bg);
+  color: var(--verde-texto);
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 8px;
+  border-radius: 6px;
+}
+
+.partido-equipos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.equipo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  font-size: 14px;
+  min-width: 0;
+}
+
+.equipo span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.equipo-visitante {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.bandera {
+  width: 24px;
+  height: 18px;
+  object-fit: cover;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.bandera-vacia {
+  width: 24px;
+  height: 18px;
+  border-radius: 2px;
+  background: var(--celeste-claro);
+  flex-shrink: 0;
+}
+
+.vs {
+  font-size: 12px;
+  color: var(--texto-secundario);
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+.resultado {
+  font-size: 17px;
+  font-weight: 500;
+  padding: 0 6px;
+  flex-shrink: 0;
+}
+
+.partido-estadio {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: var(--texto-secundario);
+}
+
+.penales {
+  font-size: 11px;
+  color: var(--texto-secundario);
+  font-weight: 400;
+}
+
+/* -------------------- Tabla de grupos -------------------- */
+.selector-grupo {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: #fff;
+  color: var(--texto);
+  margin-bottom: 12px;
+  appearance: none;
+}
+
+.tabla-posiciones {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border: 1px solid var(--borde);
+  border-radius: 12px;
+  font-size: 11px;
+  table-layout: fixed;
+}
+
+.tabla-posiciones th,
+.tabla-posiciones td {
+  padding: 8px 2px;
+  text-align: center;
+  border-bottom: 1px solid var(--borde);
+}
+
+.tabla-posiciones thead th {
+  font-size: 10px;
+  color: var(--texto-secundario);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.tabla-posiciones tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.tabla-posiciones .col-pos {
+  width: 20px;
+  font-weight: 500;
+}
+
+.tabla-posiciones .col-equipo {
+  text-align: left;
+  width: 36%;
+  padding-left: 8px;
+}
+
+.equipo-celda {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+}
+
+.equipo-celda .bandera,
+.equipo-celda .bandera-vacia {
+  width: 18px;
+  height: 13px;
+}
+
+.equipo-celda span {
+  font-size: 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tabla-posiciones .col-pts {
+  width: 28px;
+  font-weight: 500;
+}
+
+.tabla-posiciones tbody tr.pos-1 td:first-child,
+.tabla-posiciones tbody tr.pos-2 td:first-child {
+  border-left: 3px solid var(--azul);
+}
+
+.tabla-posiciones tbody tr.pos-3 td:first-child {
+  border-left: 3px solid var(--celeste-claro);
+}
+
+.leyenda {
+  font-size: 12px;
+  color: var(--texto-secundario);
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.punto {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.punto-clasifica {
+  background: var(--azul);
+}
+
+.punto-tercero {
+  background: var(--celeste-claro);
+  border: 1px solid var(--celeste);
+}
+
+/* -------------------- Calendario -------------------- */
+.fecha-calendario {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--azul-oscuro);
+  margin: 18px 0 8px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--borde);
+}
+
+.fecha-calendario:first-child {
+  margin-top: 0;
+}
+
+/* -------------------- Navegación inferior -------------------- */
+.nav-inferior {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  display: flex;
+  background: #fff;
+  border-top: 1px solid var(--borde);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  background: none;
+  border: none;
+  color: var(--texto-secundario);
+  font-size: 11px;
+  padding: 8px 0 6px;
+  cursor: pointer;
+}
+
+.nav-item svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-activo {
+  color: var(--azul-oscuro);
+}
