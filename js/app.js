@@ -50,6 +50,8 @@ function ocultarPantallaCarga() {
 function renderInicio() {
   const partidos = FIXTURE.partidos || [];
 
+  const enVivo = partidos.filter(p => p.estado === 'jugando');
+
   const proximos = partidos
     .filter(p => p.estado === 'pendiente' && p.fecha)
     .sort((a, b) => fechaHoraComo(a) - fechaHoraComo(b))
@@ -60,8 +62,13 @@ function renderInicio() {
     .sort((a, b) => fechaHoraComo(b) - fechaHoraComo(a))
     .slice(0, CONFIG.MAX_RECIENTES);
 
+  const contEnVivo = document.getElementById('bloque-en-vivo');
   const contProximos = document.getElementById('proximos-partidos');
   const contRecientes = document.getElementById('resultados-recientes');
+
+  contEnVivo.innerHTML = enVivo.length
+    ? `<h2>En vivo</h2><div class="lista-partidos">${enVivo.map(p => tarjetaPartido(p, 'jugando')).join('')}</div>`
+    : '';
 
   contProximos.innerHTML = proximos.length
     ? proximos.map(p => tarjetaPartido(p, 'proximo')).join('')
@@ -78,6 +85,12 @@ function fechaHoraComo(partido) {
   return isNaN(valor.getTime()) ? 0 : valor.getTime();
 }
 
+function tipoPartido(estado) {
+  if (estado === 'finalizado') return 'finalizado';
+  if (estado === 'jugando') return 'jugando';
+  return 'proximo';
+}
+
 function tarjetaPartido(partido, tipo) {
   const local = equipoInfo(partido.local);
   const visitante = equipoInfo(partido.visitante);
@@ -88,17 +101,22 @@ function tarjetaPartido(partido, tipo) {
     : etiquetaFaseEliminatoria(partido.fase);
 
   let centro;
-  if (tipo === 'finalizado') {
-    const gl = partido.goles_local ?? '-';
-    const gv = partido.goles_visitante ?? '-';
+  if (tipo === 'finalizado' || tipo === 'jugando') {
+    const gl = partido.goles_local ?? 0;
+    const gv = partido.goles_visitante ?? 0;
     centro = `<span class="resultado">${gl} - ${gv}</span>`;
   } else {
     centro = '<span class="vs">vs</span>';
   }
 
-  const metaDerecha = tipo === 'finalizado'
-    ? '<span class="badge-finalizado">Finalizado</span>'
-    : `<span class="badge-hora">${formatearFechaHora(partido.fecha, partido.hora)}</span>`;
+  let metaDerecha;
+  if (tipo === 'finalizado') {
+    metaDerecha = '<span class="badge-finalizado">Finalizado</span>';
+  } else if (tipo === 'jugando') {
+    metaDerecha = '<span class="badge-vivo"><span class="punto-vivo" aria-hidden="true"></span>En vivo</span>';
+  } else {
+    metaDerecha = `<span class="badge-hora">${formatearFechaHora(partido.fecha, partido.hora)}</span>`;
+  }
 
   return `
     <div class="partido-card">
@@ -316,17 +334,13 @@ function renderListaCalendario(filtro) {
       cerrarDia();
       fechaActual = p.fecha;
     }
-    const tipo = p.estado === 'finalizado' ? 'finalizado' : 'proximo';
-    bufferDia.push(tarjetaPartido(p, tipo));
+    bufferDia.push(tarjetaPartido(p, tipoPartido(p.estado)));
   });
   cerrarDia();
 
   if (sinFecha.length) {
     html += `<h3 class="fecha-calendario">Fecha a confirmar</h3>`;
-    html += `<div class="lista-partidos">${sinFecha.map(p => {
-      const tipo = p.estado === 'finalizado' ? 'finalizado' : 'proximo';
-      return tarjetaPartido(p, tipo);
-    }).join('')}</div>`;
+    html += `<div class="lista-partidos">${sinFecha.map(p => tarjetaPartido(p, tipoPartido(p.estado))).join('')}</div>`;
   }
 
   contenedor.innerHTML = html;
@@ -387,9 +401,9 @@ function tarjetaLlave(cruce) {
   const visitante = equipoOPlaceholder(partido.visitante, cruce.visitante_origen);
 
   let centro;
-  if (partido.estado === 'finalizado') {
-    const gl = partido.goles_local ?? '-';
-    const gv = partido.goles_visitante ?? '-';
+  if (partido.estado === 'finalizado' || partido.estado === 'jugando') {
+    const gl = partido.goles_local ?? 0;
+    const gv = partido.goles_visitante ?? 0;
     let texto = `${gl} - ${gv}`;
     if (huboTandaPenales(partido)) {
       texto += ` <span class="penales">(${partido.penales_local}-${partido.penales_visitante} pen.)</span>`;
@@ -399,9 +413,14 @@ function tarjetaLlave(cruce) {
     centro = '<span class="vs">vs</span>';
   }
 
-  const metaDerecha = partido.estado === 'finalizado'
-    ? '<span class="badge-finalizado">Finalizado</span>'
-    : (partido.fecha ? `<span class="badge-hora">${formatearFechaHora(partido.fecha, partido.hora)}</span>` : '');
+  let metaDerecha;
+  if (partido.estado === 'finalizado') {
+    metaDerecha = '<span class="badge-finalizado">Finalizado</span>';
+  } else if (partido.estado === 'jugando') {
+    metaDerecha = '<span class="badge-vivo"><span class="punto-vivo" aria-hidden="true"></span>En vivo</span>';
+  } else {
+    metaDerecha = partido.fecha ? `<span class="badge-hora">${formatearFechaHora(partido.fecha, partido.hora)}</span>` : '';
+  }
 
   const estadio = ESTADIOS_POR_ID[partido.id_estadio];
 
